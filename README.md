@@ -12,8 +12,8 @@ As we have seen, *complete binary trees* can be efficiently represented in a seq
 class Node {
                                            +-----------------+
   T info;                                  |       info      |
-  Node lchild;                             +--------+--------+
-  Node rchild;                             | lchild | rchild |
+  Node left;                               +--------+--------+
+  Node right;                              |  left  |  right |
   ...                                      +--------+--------+
 }
 ```
@@ -25,10 +25,10 @@ In this problem set, you will implement a **minimum priority queue** using a **h
 class Node {
                                            +-----------------+
   T info;                                  |      parent     |
-  Node lchild;                             +-----------------+
-  Node rchild;                             |       info      |
+  Node left;                               +-----------------+
+  Node right;                              |       info      |
   Node parent;                             +--------+--------+
-  ...                                      | lchild | rchild |
+  ...                                      |  left  |  right |
                                            +--------+--------+
 }
 ```
@@ -94,7 +94,7 @@ Here's an intuition about how this will work. Look at the tree below, where the 
 
 **Observation** What do all left children have in common? They are all even numbers (i.e., for each left child `l`, `l%2==0`). What do all right children have in common? They are all odd numbers (i.e., for each right child `r`, `r%2==1`).
 
-To navigate in a tree to a node according to its number, you can write a recursive method that works like this. (You are free to use an iterative method, if you like.)
+To navigate in a tree to a node according to its number, you can write a recursive method that works like this. (You are free to use an iterative method, if you like!)
 
 1. The method will have two arguments: `Node traverse` and `int z`. The first time you call the method, you'll pass in `top` for the `traverse` parameter and the number of the node you want to reach for the `z` parameter.
 
@@ -106,9 +106,9 @@ To navigate in a tree to a node according to its number, you can write a recursi
 return getNode(z/2, traverse).right;
 ```
 
-When you **remove the min** from the root, you want to *find* the bottom node, so you can move its info to the root node and then sink it down to where it belongs. (You'll also want to disconnect it from its parent node.)
+When you **remove the min** from the root, you want to find the bottom node, so you can move its info to the root node and then sink it down to where it belongs. (You'll also want to disconnect it from its parent node.)
 
-When you **insert an element**, you want to find where that new bottom node is going to go. This means that you are actually trying to find the parent node of the new node. 
+When you **insert an element**, you want to find where that new bottom node is going to go. This means that you are actually trying to find the *parent node* of the new node you'll be adding.
 
 You will have to use a different value for `z` above, depending on whether you want it to return a pointer to the `Node` you have to delete (`z` should be the size of the PQ) or to the `Node` whose right or left child you want to create (`z` should be the future size of the PQ divided by 2).
 
