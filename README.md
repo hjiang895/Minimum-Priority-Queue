@@ -56,7 +56,7 @@ means that the type variable `T` can be replaced by any type that includes an `i
 ## Implementation
 I have included some code to get you started in the `LinkedMinPQ.java` file in the `src` directory. You do not have to use this code, but you should name your implementation `LinkedMinPQ.java`, and as always, the file should go in the `src` directory.
 
-### `add()` and `delMin()` methods
+### `insert()` and `delMin()` methods
 As with the sequential implementation, the `insert` operation must find the tree node to which a new entry is to be attached, i.e., the next available place to attach a new node. It should then "swim" the info in that new node up to a node where it is smaller than its children but bigger than its parent.
 
 Similarly, the `delMin` operation, after it removes the top (minimum) node, must replace the info in the top node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is smaller than its children but bigger than its parent. 
@@ -67,14 +67,14 @@ The toString() method should return the values in the nodes in *level-order* (a.
 ### `sink()` and `swim()` helper methods
 You should write a `sink()` method and a `swim()` method to help you with your insert and delete methods. Both will use the `compareTo` method to determine whether to swap the info in the current node with its parent (when swimming) or the smaller of its children (when sinking). 
 
-`swim()` takes a pointer to the `Node` you added at the bottom of the tree. It compares that Node's `info` with the `info` of its parent. If its `info` is less than that of its parent (use `compareTo()`), swap their infos, and then make the pointer point at the parent. Do this until you find a parent whose info is smaller or when you have no more parents.
+`swim()` takes a pointer to the `Node` you inserted at the bottom of the tree. It compares that Node's `info` with the `info` of its parent. If its `info` is less than that of its parent (use `compareTo()`), swap their infos, and then make the pointer point at the parent. Do this until you find a parent whose info is smaller or when you have no more parents.
 
 `sink()` takes a pointer to `top`, whose info should be the info of the node previously at the bottom of the tree. It compares that Node's info with the info of the smaller of its children. If its info is greater than that of its smaller child, swap their infos and make the pointer point at that child. Do this until your info is smaller than that of both children.
 
 Remember that you are not actually sinking or swimming a `Node`. Instead, you just swap the data in the `info` field of the current `Node` with the data in the `info` field in the parent `Node` (if swimming) or child `Node` (if sinking). These will be functions with return type `void`.
 
 ### `findNode()` helper method
-You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `delMin()`. And you need to be able to know where to insert a new node when calling `add()`. 
+You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `delMin()`. And you need to be able to know where to insert a new node when calling `insert()`. 
 
 In the sequential implementation, the these locations were easy to find using the size of the tree to compute the appropriate array index. With this linked implementation, a little more work is required. You still use the size of the data structure, but you will use it to compute the path from the root to the desired node using integer division by 2 and the modulus operator.
 
@@ -108,16 +108,16 @@ return getNode(z/2, traverse).right;
 
 When you **remove the min** from the root, you want to *find* the bottom node, so you can move its info to the root node and then sink it down to where it belongs. (You'll also want to disconnect it from its parent node.)
 
-When you **add an element**, you want to find where that new bottom node is going to go. This means that you are actually trying to find the parent node of the new node. 
+When you **insert an element**, you want to find where that new bottom node is going to go. This means that you are actually trying to find the parent node of the new node. 
 
 You will have to use a different value for `z` above, depending on whether you want it to return a pointer to the `Node` you have to delete (`z` should be the size of the PQ) or to the `Node` whose right or left child you want to create (`z` should be the future size of the PQ divided by 2).
 
 ### Don't forget the special cases
-When adding to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `delMin()` from an empty priority queue, you can just return `null`.
+When inserting to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `delMin()` from an empty priority queue, you can just return `null`.
 
 ### Testing your code `main()`
 
-Write code in the main() method to test your implementation. Be sure to do lots of adding and removing and adding again, and print out the priority queue after each change to make sure it looks right.
+Write code in the main() method to test your implementation. Be sure to do lots of inserting and removing and inserting again, and print out the priority queue after each change to make sure it looks right.
 
 ---
 
