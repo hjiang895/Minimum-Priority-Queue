@@ -1,4 +1,4 @@
-## Problem Set 5: Minimum priority queue
+## Problem Set 7: Minimum priority queue
 
 ### Due Tuesday, March 19 @ 11:59pm
 
@@ -56,7 +56,7 @@ means that the type variable `T` can be replaced by any type that includes an `i
 ## Implementation
 I have included some code to get you started in the `LinkedMinPQ.java` file in the `src` directory. You do not have to use this code, but you should name your implementation `LinkedMinPQ.java`, and as always, the file should go in the `src` directory.
 
-### insert and delete
+### `add()` and `delMin()` methods
 As with the sequential implementation, the `insert` operation must find the tree node to which a new entry is to be attached, i.e., the next available place to attach a new node. It should then "swim" the info in that new node up to a node where it is smaller than its children but bigger than its parent.
 
 Similarly, the `delMin` operation, after it removes the top (minimum) node, must replace the info in the top node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is smaller than its children but bigger than its parent. 
@@ -73,7 +73,7 @@ You should write a `sink()` method and a `swim()` method to help you with your i
 
 Remember that you are not actually sinking or swimming a `Node`. Instead, you just swap the data in the `info` field of the current `Node` with the data in the `info` field in the parent `Node` (if swimming) or child `Node` (if sinking). These will be functions with return type `void`.
 
-### Finding the bottom node or the next node to add
+### `findNode()` helper method
 You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `delMin()`. And you need to be able to know where to insert a new node when calling `add()`. 
 
 In the sequential implementation, the these locations were easy to find using the size of the tree to compute the appropriate array index. With this linked implementation, a little more work is required. You still use the size of the data structure, but you will use it to compute the path from the root to the desired node using integer division by 2 and the modulus operator.
@@ -94,9 +94,9 @@ Here's an intuition about how this will work. Look at the tree below, where the 
 
 **Observation** What do all left children have in common? They are all even numbers (i.e., for each left child `l`, `l%2==0`). What do all right children have in common? They are all odd numbers (i.e., for each right child `r`, `r%2==1`).
 
-To navigate in a tree to a node according to its number, you can write a recursive method that works like this.
+To navigate in a tree to a node according to its number, you can write a recursive method that works like this. (You are free to use an iterative method, if you like.)
 
-1. The method will have two arguments: `Node traverse` and `int z`. The first time you call the method, you'll set `traverse` to `top` and `z` to the number of the node you want to reach. 
+1. The method will have two arguments: `Node traverse` and `int z`. The first time you call the method, you'll pass in `top` for the `traverse` parameter and the number of the node you want to reach for the `z` parameter.
 
 2. Base case: if `z` is equal to 1, return `traverse`.
 
@@ -112,6 +112,26 @@ When you **add an element**, you want to find where that new bottom node is goin
 
 You will have to use a different value for `z` above, depending on whether you want it to return a pointer to the `Node` you have to delete (`z` should be the size of the PQ) or to the `Node` whose right or left child you want to create (`z` should be the future size of the PQ divided by 2).
 
-## Testing your code
-As usual, write a few unit tests in order to demonstrate that the code is working correctly. Remember: the top of the heap should be the **smallest** item (e.g., the small number, the String that comes first alphabetically). You might find it easiest to test with Strings that are individual single-case letters or integers so that you're putting things in an order that's easy to check.
+### Don't forget the special cases
+When adding to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `delMin()` from an empty priority queue, you can just return `null`.
+
+### Testing your code `main()`
+
+Write code in the main() method to test your implementation. Be sure to do lots of adding and removing and adding again, and print out the priority queue after each change to make sure it looks right.
+
+---
+
+## Pushing and verifying your submission
+
+Once your code works to your satisfaction, push `LinkedMinPQ.java`to your personal master repo on the GitHub Classroom site, as you have done for your previous problem sets. Use the commit message "READY FOR GRADING" so we know you are done. 
+
+---
+
+## Important notes on grading
+
+1. The file **must be in the `src` directory**. You will lose a point if it's in the wrong directory.
+
+2. Your code must compile. If it does not compile, you will get a 0. If you are struggling and you aren't able to get in touch with me or the TAs, any TAs in the lab can help you compile your code. If it's 11:55pm on the day it's due and you don't want to take the late penalty, comment out the part of the code that is preventing compilation, and include an explanation of why you are commenting it out.
+
+3. The TAs will review and run your code. Note that in addition to running your `main()` method, they will try out one of their own. It's a good idea to do some error checking to avoid any surprises during grading.
 
